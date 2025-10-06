@@ -77,5 +77,61 @@ int main() {
 
 
 void addNodeToTail(ReviewNode*& head, ReviewNode*& tail, double rating, const string& comment) {
-    
+    ReviewNode* newNode = new ReviewNode{rating, comment, nullptr};
+    if (head == nullptr) {
+        // if the list is empty, the new node is both the head and the tail
+        head = newNode;
+        tail = newNode;
+    } else {
+        // else link the current tail to the new node and update tail
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+void addNodeToHead(ReviewNode*& head, ReviewNode*& tail, double rating, const string& comment) {
+    ReviewNode* newNode = new ReviewNode{rating, comment, nullptr};
+    if (head == nullptr) {
+        // If the list is empty, the new node is both the head and the tail
+        head = newNode;
+        tail = newNode;
+    } else {
+        // Otherwise, link the new node to the current head and update head
+        newNode->next = head;
+        head = newNode;
+    }
+}
+
+void printListAndAverage(ReviewNode* head) {
+    if (head == nullptr) {
+        cout << "\nNo reviews to display." << endl;
+        return;
+    }
+
+    cout << "\nOutputting all reviews:" << endl;
+    ReviewNode* current = head;
+    double totalRating = 0.0;
+    int count = 0;
+
+    while (current != nullptr) {
+        count++;
+        cout << "> Review #" << count << ": " << current->rating << ": " << current->comment << endl;
+        totalRating += current->rating;
+        current = current->next;
+    }
+
+    if (count > 0) {
+        double average = totalRating / count;
+        cout << "> Average: " << fixed << setprecision(6) << average << endl;
+    }
+}
+
+void cleanup(ReviewNode*& head) {
+    ReviewNode* current = head;
+    while (current != nullptr) {
+        ReviewNode* nextNode = current->next; 
+        delete current;                       
+        current = nextNode;                   
+    head = nullptr; 
+    }
 }
